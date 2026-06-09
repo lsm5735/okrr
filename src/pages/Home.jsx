@@ -4,7 +4,6 @@ import { company, businessAreas } from '../data/site'
 import { works } from '../data/works'
 import { videos } from '../data/videos'
 import useScrollReveal from '../hooks/useScrollReveal'
-import Marquee from '../components/Marquee'
 
 // Hero slides
 const slides = [
@@ -429,17 +428,6 @@ function VideosPreview() {
   )
 }
 
-const MARQUEE_ITEMS = [
-  'Okrr Art Agency',
-  '전시 기획',
-  '아티스트 에이전시',
-  '아트 컨설팅',
-  'IP 개발',
-  '공공 미술',
-  '작품 유통 및 렌탈',
-  'Our life in Art',
-]
-
 export default function Home() {
   useScrollReveal()
   return (
@@ -447,10 +435,8 @@ export default function Home() {
       <Hero />
       <Stats />
       <VideosPreview />
-      <Marquee items={MARQUEE_ITEMS} speed={28} />
       <AboutIntro />
       <BusinessGrid />
-      <Marquee items={MARQUEE_ITEMS} speed={35} />
       <FeaturedWorks />
       <VisionBand />
       <ContactBand />

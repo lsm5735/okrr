@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { company, businessAreas } from '../data/site'
 import { works } from '../data/works'
+import { videos } from '../data/videos'
 
 // Hero slides
 const slides = [
@@ -341,6 +342,61 @@ function ContactBand() {
   )
 }
 
+function VideosPreview() {
+  const preview = videos.slice(0, 3)
+  const isPlaceholder = (id) => id === 'ld_miMfhuNY' || id.startsWith('VIDEO_ID')
+
+  return (
+    <section className="section-y bg-white dark:bg-dark-surface">
+      <div className="mx-auto max-w-container section-x">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <p className="mb-3 text-xs font-semibold tracking-[0.25em] text-neutral-400 dark:text-dark-muted uppercase">
+              Videos
+            </p>
+            <h2 className="text-4xl font-black text-neutral-900 dark:text-okrr-cloud md:text-5xl">
+              Film & Records
+            </h2>
+          </div>
+          <Link to="/videos/all" className="btn-outline shrink-0">
+            More →
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {preview.map((v) => (
+            <div key={v.id} className="card-base overflow-hidden group">
+              <div className="relative aspect-video bg-neutral-100 dark:bg-dark-border">
+                <img
+                  src={`https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`}
+                  alt={v.title}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  onError={(e) => { e.target.style.display = 'none' }}
+                />
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors" />
+                <Link
+                  to="/videos/all"
+                  className="absolute inset-0 flex items-center justify-center"
+                >
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-lg transition-transform group-hover:scale-110">
+                    ▷
+                  </span>
+                </Link>
+              </div>
+              <div className="p-4">
+                <p className="text-xs text-neutral-400 dark:text-dark-muted mb-1">{v.date}</p>
+                <h3 className="text-sm font-bold leading-snug text-neutral-900 dark:text-okrr-cloud line-clamp-2">
+                  {v.title}
+                </h3>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default function Home() {
   return (
     <>
@@ -349,6 +405,7 @@ export default function Home() {
       <AboutIntro />
       <BusinessGrid />
       <FeaturedWorks />
+      <VideosPreview />
       <VisionBand />
       <ContactBand />
     </>

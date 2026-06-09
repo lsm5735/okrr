@@ -52,21 +52,25 @@ export default function Header() {
                   {item.label}
                 </NavLink>
 
-                {/* Dropdown: absolute under this exact nav item.
-                    left-5 = same as NavLink's px-5, so the first line starts under the first letter */}
+                {/* Dropdown — left:0 aligns with <li> edge; items inside use pl-5 (= NavLink px-5)
+                    so text starts exactly under the first letter of the parent menu item */}
                 {hovered === item.label && item.children.length > 0 && (
-                  <ul className="absolute left-5 top-full z-50 flex flex-col gap-1.5 pt-3 pb-4 min-w-max">
-                    {item.children.map((c) => (
-                      <li key={c.to}>
-                        <Link
-                          to={c.to}
-                          className="block whitespace-nowrap text-sm text-neutral-500 dark:text-dark-muted transition hover:text-neutral-900 dark:hover:text-okrr-cloud hover:font-semibold"
-                        >
-                          {c.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="absolute left-0 top-full z-50 w-max">
+                    {/* Top accent line connects to the header bottom border */}
+                    <div className="h-px bg-neutral-900 dark:bg-okrr-cloud w-full" />
+                    <ul className="flex flex-col gap-0 bg-okrr-cloud/98 dark:bg-dark-bg/98 backdrop-blur-sm border-x border-b border-okrr-nimbus/30 dark:border-dark-border shadow-sm py-3">
+                      {item.children.map((c) => (
+                        <li key={c.to}>
+                          <Link
+                            to={c.to}
+                            className="block whitespace-nowrap pl-5 pr-8 py-2 text-sm text-neutral-500 dark:text-dark-muted transition hover:text-neutral-900 dark:hover:text-okrr-cloud hover:bg-black/[.03] dark:hover:bg-white/[.03]"
+                          >
+                            {c.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </li>
             ))}

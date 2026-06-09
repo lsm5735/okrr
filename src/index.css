@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans antialiased;
+    @apply bg-okrr-cloud text-neutral-900;
+    @apply dark:bg-dark-bg dark:text-okrr-cloud;
+  }
+}
+
+@layer components {
+  .section-x {
+    @apply px-4 md:px-10 lg:px-20 xl:px-40;
+  }
+  .section-y {
+    @apply py-20 md:py-28 lg:py-36;
+  }
+  .card-base {
+    @apply rounded-2xl overflow-hidden bg-white dark:bg-dark-surface border border-okrr-nimbus/40 dark:border-dark-border;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-full bg-neutral-900 dark:bg-okrr-cloud px-6 py-3 text-sm font-semibold text-white dark:text-neutral-900 transition hover:opacity-80;
+  }
+  .btn-outline {
+    @apply inline-flex items-center gap-2 rounded-full border border-neutral-300 dark:border-dark-border px-6 py-3 text-sm font-semibold transition hover:bg-neutral-100 dark:hover:bg-dark-surface;
+  }
+  .tag {
+    @apply inline-block rounded-full px-3 py-1 text-xs font-medium;
+  }
+}
+
+/* Smooth fade for dark mode transition */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+a, button {
+  transition-property: all;
+}

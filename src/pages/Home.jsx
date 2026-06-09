@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { company, businessAreas } from '../data/site'
 import { works } from '../data/works'
 import { videos } from '../data/videos'
+import useScrollReveal from '../hooks/useScrollReveal'
+import Marquee from '../components/Marquee'
 
 // Hero slides
 const slides = [
@@ -113,21 +115,48 @@ function Hero() {
   )
 }
 
+function CountUp({ target, suffix = '', duration = 1600 }) {
+  const [display, setDisplay] = useState('0')
+  const ref = useRef(null)
+  const started = useRef(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || started.current) return
+      started.current = true
+      const start = Date.now()
+      const num = parseInt(target.replace(/\D/g, ''), 10)
+      const tick = () => {
+        const elapsed = Date.now() - start
+        const progress = Math.min(elapsed / duration, 1)
+        const ease = 1 - Math.pow(1 - progress, 3)
+        setDisplay(Math.round(ease * num).toLocaleString() + suffix)
+        if (progress < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    }, { threshold: 0.5 })
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [target, suffix, duration])
+
+  return <span ref={ref}>{display}</span>
+}
+
 function Stats() {
   const stats = [
-    { value: '2017', label: 'Est.' },
-    { value: '50+', label: '프로젝트' },
-    { value: '100+', label: '협력 작가' },
-    { value: '6', label: '사업 영역' },
+    { target: '2017', suffix: '',  label: 'Est.' },
+    { target: '50',   suffix: '+', label: '프로젝트' },
+    { target: '100',  suffix: '+', label: '협력 작가' },
+    { target: '6',    suffix: '',  label: '사업 영역' },
   ]
   return (
     <section className="border-y border-okrr-nimbus/30 dark:border-dark-border bg-white dark:bg-dark-surface">
       <div className="mx-auto max-w-container section-x py-10">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {stats.map((s) => (
-            <div key={s.label} className="text-center">
+            <div key={s.label} className="text-center" data-reveal>
               <p className="text-3xl font-black text-neutral-900 dark:text-okrr-cloud md:text-4xl">
-                {s.value}
+                <CountUp target={s.target} suffix={s.suffix} />
               </p>
               <p className="mt-1 text-xs font-medium tracking-widest text-neutral-400 dark:text-dark-muted uppercase">
                 {s.label}
@@ -145,7 +174,7 @@ function AboutIntro() {
     <section className="section-y">
       <div className="mx-auto max-w-container section-x">
         <div className="flex flex-col gap-16 lg:flex-row lg:items-start">
-          <div className="lg:w-1/2">
+          <div className="lg:w-1/2" data-reveal>
             <p className="mb-4 text-xs font-semibold tracking-[0.25em] text-neutral-400 dark:text-dark-muted uppercase">
               About Okrr
             </p>
@@ -155,7 +184,7 @@ function AboutIntro() {
               in Art
             </h2>
           </div>
-          <div className="flex flex-col gap-5 lg:w-1/2 lg:pt-4">
+          <div className="flex flex-col gap-5 lg:w-1/2 lg:pt-4" data-reveal data-delay="150">
             {company.description.map((p, i) => (
               <p key={i} className="text-base leading-8 text-neutral-600 dark:text-dark-muted md:text-lg">
                 {p}
@@ -186,10 +215,12 @@ function BusinessGrid() {
           </h2>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {businessAreas.map((b) => (
+          {businessAreas.map((b, i) => (
             <Link
               key={b.key}
               to={b.to}
+              data-reveal
+              data-delay={i * 80}
               className="group flex flex-col gap-4 rounded-2xl border border-okrr-nimbus/40 dark:border-dark-border p-7 transition hover:border-neutral-300 dark:hover:border-dark-muted hover:shadow-sm"
             >
               <div className="flex items-center justify-between">
@@ -398,14 +429,28 @@ function VideosPreview() {
   )
 }
 
+const MARQUEE_ITEMS = [
+  'Okrr Art Agency',
+  '전시 기획',
+  '아티스트 에이전시',
+  '아트 컨설팅',
+  'IP 개발',
+  '공공 미술',
+  '작품 유통 및 렌탈',
+  'Our life in Art',
+]
+
 export default function Home() {
+  useScrollReveal()
   return (
     <>
       <Hero />
       <Stats />
       <VideosPreview />
+      <Marquee items={MARQUEE_ITEMS} speed={28} />
       <AboutIntro />
       <BusinessGrid />
+      <Marquee items={MARQUEE_ITEMS} speed={35} />
       <FeaturedWorks />
       <VisionBand />
       <ContactBand />

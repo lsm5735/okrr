@@ -18,7 +18,7 @@
     @apply px-4 md:px-10 lg:px-20 xl:px-40;
   }
   .section-y {
-    @apply py-20 md:py-28 lg:py-36;
+    @apply py-12 md:py-16 lg:py-20;
   }
   .card-base {
     @apply rounded-2xl overflow-hidden bg-white dark:bg-dark-surface border border-okrr-nimbus/40 dark:border-dark-border;
@@ -34,7 +34,31 @@
   }
 }
 
-/* Smooth fade for dark mode transition */
+/* ── Scroll Reveal ───────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
+              transform 0.75s cubic-bezier(0.22,1,0.36,1);
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Marquee ─────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee var(--speed, 30s) linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ── Smooth fade for dark mode transition ────────────── */
 *, *::before, *::after {
   transition-property: background-color, border-color, color;
   transition-duration: 200ms;

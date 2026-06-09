@@ -11,13 +11,25 @@
     />
     <title>Okrr Art Agency</title>
     <script>
-      // Dark mode initialization — prevent flash
+      // Dark mode + palette initialization — prevent flash
       ;(function () {
-        const stored = localStorage.getItem('okrr-theme')
+        // Dark mode
+        const storedTheme = localStorage.getItem('okrr-theme')
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        if (stored === 'dark' || (!stored && prefersDark)) {
+        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
           document.documentElement.classList.add('dark')
         }
+        // Palette color (RGB space-separated values for CSS variables)
+        const palettes = {
+          cloud:  '239 233 225',
+          nimbus: '200 203 207',
+          rose:   '237 213 216',
+          ice:    '191 208 224',
+          aqua:   '181 196 181',
+        }
+        const stored = localStorage.getItem('okrr-palette') || 'cloud'
+        const rgb = palettes[stored] || palettes.cloud
+        document.documentElement.style.setProperty('--palette-bg-rgb', rgb)
       })()
     </script>
   </head>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { nav, company } from '../data/site'
 import ThemeToggle from './ThemeToggle'
+import ThemePicker from './ThemePicker'
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -53,7 +54,8 @@ export default function Header() {
             ))}
           </ul>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <ThemePicker />
             <ThemeToggle />
             {/* Hamburger */}
             <button

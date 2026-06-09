@@ -6,8 +6,9 @@ export default {
     extend: {
       colors: {
         // Okrr 5-Color Pantone Palette
+        // cloud uses a CSS variable so palette-picker can swap it at runtime
         okrr: {
-          cloud:  '#EFE9E1', // Cloud Dancer — light bg
+          cloud:  'rgb(var(--palette-bg-rgb, 239 233 225) / <alpha-value>)',
           nimbus: '#C8CBCF', // Nimbus Cloud — border/secondary
           rose:   '#EDD5D8', // Raindrops on Roses — accent pink
           ice:    '#BFD0E0', // Ice Melt — accent blue

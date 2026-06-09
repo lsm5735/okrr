@@ -402,10 +402,10 @@ export default function Home() {
     <>
       <Hero />
       <Stats />
+      <VideosPreview />
       <AboutIntro />
       <BusinessGrid />
       <FeaturedWorks />
-      <VideosPreview />
       <VisionBand />
       <ContactBand />
     </>

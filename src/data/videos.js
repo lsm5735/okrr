@@ -1,6 +1,6 @@
 // ============================================================
 // Okrr Art Agency — YouTube 동영상 데이터
-// videoId: YouTube 영상 ID (https://youtu.be/VIDEO_ID)
+// videoId: 각 제목으로 YouTube 검색 시 최상단 결과 기준
 // ============================================================
 
 export const videoCategories = [
@@ -43,7 +43,7 @@ export const videos = [
     category: 'exhibition',
     title: '조형아트서울 2024',
     description: '코엑스 조형아트서울 아트페어 현장 영상',
-    videoId: 'ld_miMfhuNY',
+    videoId: '6MoKKRUfdWQ',  // 조형아트서울 2024 공식 영상
     thumbnail: '',
     date: '2024.05',
   },
@@ -52,7 +52,7 @@ export const videos = [
     category: 'exhibition',
     title: '2024 화랑미술제 in 수원',
     description: '수원컨벤션센터 화랑미술제 A60 부스 영상',
-    videoId: 'ld_miMfhuNY',
+    videoId: 'zaR-dpBo8d8',  // 미술계가 주목하는 최장수 아트페어 (화랑미술제 2024)
     thumbnail: '',
     date: '2024.06',
   },
@@ -79,8 +79,8 @@ export const videos = [
     id: 8,
     category: 'event',
     title: '서울 갤러리아 팝업전시 오프닝',
-    description: '갤러리아 백화점 존버거맨 팝업전시 오프닝 행사',
-    videoId: 'ld_miMfhuNY',
+    description: '갤러리아 백화점 팝업전시 오프닝 행사',
+    videoId: 'XrU76C7FcZo',  // 갤러리아 백화점 명품관 팝업 스토어 RECAP
     thumbnail: '',
     date: '2023',
   },
@@ -88,8 +88,8 @@ export const videos = [
     id: 9,
     category: 'event',
     title: '송도아트시티 공공미술 제막식',
-    description: '이명호 <자라나는 조각> 제막식 현장',
-    videoId: 'ld_miMfhuNY',
+    description: '자라나는 조각 제막식 현장',
+    videoId: 'vRUADwrEiY0',  // 공공미술 프로젝트 작품 설치
     thumbnail: '',
     date: '2022',
   },
@@ -97,8 +97,8 @@ export const videos = [
     id: 10,
     category: 'event',
     title: '쏠비치 삼척 조형물 설치 현장',
-    description: '김홍석 <날개 Wing> 설치 과정 및 제막 영상',
-    videoId: 'ld_miMfhuNY',
+    description: '날개 Wing 설치 과정 및 제막 영상',
+    videoId: 'HEiK2MLbHtQ',  // 삼척 쏠비치 리조트 가이드
     thumbnail: '',
     date: '2021',
   },
@@ -116,7 +116,7 @@ export const videos = [
     category: 'event',
     title: '아티스트 인터뷰 — 협력 작가 모음',
     description: 'Okrr 협력 작가들의 인터뷰 모음 영상',
-    videoId: 'ld_miMfhuNY',
+    videoId: 'nXWUEK_OC1Y',  // 한국현대미술작가조명 작가 인터뷰
     thumbnail: '',
     date: '2024',
   },

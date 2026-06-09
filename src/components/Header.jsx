@@ -79,28 +79,35 @@ export default function Header() {
           ].join(' ')}
         >
           <div className="mx-auto flex max-w-container items-start justify-between section-x">
-            {/* Logo spacer — same markup as the real logo to match its width */}
+            {/* Logo spacer */}
             <span className="invisible text-xl font-black tracking-widest">{company.name}</span>
 
-            {/* Sub-columns — one per nav item, each same width as the nav link above */}
+            {/* Sub-columns: each column contains an invisible ghost of its nav label
+                (same font/padding as the real NavLink) so widths align exactly */}
             <ul className="flex">
               {nav.map((item) => (
                 <li
                   key={item.label}
                   onMouseEnter={() => setHovered(item.label)}
-                  className="flex flex-col gap-2 py-5"
-                  style={{ minWidth: '0', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
+                  className="flex flex-col"
                 >
-                  {hovered === item.label &&
-                    item.children.map((c) => (
-                      <Link
-                        key={c.label + c.to}
-                        to={c.to}
-                        className="block whitespace-nowrap text-sm text-neutral-500 dark:text-dark-muted transition hover:text-neutral-900 dark:hover:text-okrr-cloud hover:font-semibold"
-                      >
-                        {c.label}
-                      </Link>
-                    ))}
+                  {/* Ghost — forces column width to match the NavLink above */}
+                  <span className="invisible px-5 py-0 text-sm font-semibold tracking-wide">
+                    {item.label}
+                  </span>
+                  {/* Visible sub-items, left-aligned under the nav item */}
+                  <div className="flex flex-col gap-2 px-5 pb-5">
+                    {hovered === item.label &&
+                      item.children.map((c) => (
+                        <Link
+                          key={c.label + c.to}
+                          to={c.to}
+                          className="block whitespace-nowrap text-sm text-neutral-500 dark:text-dark-muted transition hover:text-neutral-900 dark:hover:text-okrr-cloud hover:font-semibold"
+                        >
+                          {c.label}
+                        </Link>
+                      ))}
+                  </div>
                 </li>
               ))}
             </ul>

@@ -16,11 +16,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full">
-      <nav
-        className="bg-okrr-cloud/95 dark:bg-dark-bg/95 backdrop-blur-sm border-b border-okrr-nimbus/30 dark:border-dark-border"
-        onMouseLeave={() => setHovered(null)}
-      >
+      <nav className="bg-okrr-cloud/95 dark:bg-dark-bg/95 backdrop-blur-sm border-b border-okrr-nimbus/30 dark:border-dark-border">
         <div className="mx-auto flex h-16 max-w-container items-center justify-between section-x">
+
           {/* Logo */}
           <Link
             to="/"
@@ -29,12 +27,15 @@ export default function Header() {
             {company.name}
           </Link>
 
-          {/* Desktop nav */}
-          <ul className="hidden items-stretch lg:flex">
+          {/* Desktop nav — each <li> is position:relative so dropdown is anchored to it */}
+          <ul
+            className="hidden items-stretch lg:flex"
+            onMouseLeave={() => setHovered(null)}
+          >
             {nav.map((item) => (
               <li
                 key={item.label}
-                className="flex items-center"
+                className="relative flex items-center"
                 onMouseEnter={() => setHovered(item.label)}
               >
                 <NavLink
@@ -50,10 +51,28 @@ export default function Header() {
                 >
                   {item.label}
                 </NavLink>
+
+                {/* Dropdown: absolute under this exact nav item.
+                    left-5 = same as NavLink's px-5, so the first line starts under the first letter */}
+                {hovered === item.label && item.children.length > 0 && (
+                  <ul className="absolute left-5 top-full z-50 flex flex-col gap-1.5 pt-3 pb-4 min-w-max">
+                    {item.children.map((c) => (
+                      <li key={c.to}>
+                        <Link
+                          to={c.to}
+                          className="block whitespace-nowrap text-sm text-neutral-500 dark:text-dark-muted transition hover:text-neutral-900 dark:hover:text-okrr-cloud hover:font-semibold"
+                        >
+                          {c.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
 
+          {/* Controls */}
           <div className="flex items-center gap-2">
             <ThemePicker />
             <ThemeToggle />
@@ -68,55 +87,6 @@ export default function Header() {
               <span className="h-0.5 w-5 bg-neutral-800 dark:bg-okrr-cloud" />
               <span className="h-0.5 w-5 bg-neutral-800 dark:bg-okrr-cloud" />
             </button>
-          </div>
-        </div>
-
-        {/* Desktop mega submenu — mirrors header justify-between so columns sit under the correct nav items */}
-        <div
-          className={[
-            'hidden border-t border-okrr-nimbus/20 dark:border-dark-border bg-okrr-cloud/95 dark:bg-dark-bg/95 backdrop-blur-sm overflow-hidden transition-all duration-200 lg:block',
-            hovered ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0 border-t-0',
-          ].join(' ')}
-        >
-          <div className="mx-auto flex max-w-container items-start justify-between section-x">
-            {/* Logo spacer */}
-            <span className="invisible text-xl font-black tracking-widest">{company.name}</span>
-
-            {/* Sub-columns: each column contains an invisible ghost of its nav label
-                (same font/padding as the real NavLink) so widths align exactly */}
-            <ul className="flex">
-              {nav.map((item) => (
-                <li
-                  key={item.label}
-                  onMouseEnter={() => setHovered(item.label)}
-                  className="flex flex-col"
-                >
-                  {/* Ghost — forces column width to match the NavLink above */}
-                  <span className="invisible px-5 py-0 text-sm font-semibold tracking-wide">
-                    {item.label}
-                  </span>
-                  {/* Visible sub-items, left-aligned under the nav item */}
-                  <div className="flex flex-col gap-2 px-5 pb-5">
-                    {hovered === item.label &&
-                      item.children.map((c) => (
-                        <Link
-                          key={c.label + c.to}
-                          to={c.to}
-                          className="block whitespace-nowrap text-sm text-neutral-500 dark:text-dark-muted transition hover:text-neutral-900 dark:hover:text-okrr-cloud hover:font-semibold"
-                        >
-                          {c.label}
-                        </Link>
-                      ))}
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            {/* Controls spacer */}
-            <div className="invisible flex items-center gap-2">
-              <ThemePicker />
-              <ThemeToggle />
-            </div>
           </div>
         </div>
       </nav>

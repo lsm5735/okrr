@@ -281,37 +281,6 @@ function FeaturedWorks() {
   )
 }
 
-function ColorPaletteBand() {
-  const palette = [
-    { name: 'Cloud Dancer', code: '11-4201', bg: 'bg-okrr-cloud', text: 'text-neutral-700' },
-    { name: 'Nimbus Cloud', code: '13-4108', bg: 'bg-okrr-nimbus', text: 'text-neutral-700' },
-    { name: 'Raindrops on Roses', code: '11-1400', bg: 'bg-okrr-rose', text: 'text-neutral-700' },
-    { name: 'Ice Melt', code: '13-4306', bg: 'bg-okrr-ice', text: 'text-neutral-700' },
-    { name: 'Almost Aqua', code: '13-6006', bg: 'bg-okrr-aqua', text: 'text-neutral-700' },
-  ]
-  return (
-    <section className="py-12">
-      <div className="mx-auto max-w-container section-x">
-        <p className="mb-6 text-xs font-semibold tracking-[0.25em] text-neutral-400 dark:text-dark-muted uppercase">
-          Okrr Color Palette
-        </p>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          {palette.map((c) => (
-            <div
-              key={c.name}
-              className={['flex-1 rounded-xl h-20 flex items-end p-3', c.bg].join(' ')}
-            >
-              <div>
-                <p className={['text-xs font-bold', c.text].join(' ')}>{c.name}</p>
-                <p className={['text-xs opacity-60', c.text].join(' ')}>PANTONE {c.code}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
 function VisionBand() {
   return (
@@ -380,7 +349,6 @@ export default function Home() {
       <AboutIntro />
       <BusinessGrid />
       <FeaturedWorks />
-      <ColorPaletteBand />
       <VisionBand />
       <ContactBand />
     </>

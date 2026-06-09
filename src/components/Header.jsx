@@ -71,37 +71,45 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Desktop mega submenu */}
+        {/* Desktop mega submenu — mirrors header justify-between so columns sit under the correct nav items */}
         <div
           className={[
             'hidden border-t border-okrr-nimbus/20 dark:border-dark-border bg-okrr-cloud/95 dark:bg-dark-bg/95 backdrop-blur-sm overflow-hidden transition-all duration-200 lg:block',
             hovered ? 'max-h-52 opacity-100' : 'max-h-0 opacity-0 border-t-0',
           ].join(' ')}
         >
-          <div className="mx-auto flex max-w-container section-x">
-            {nav.map((item) =>
-              item.children.length > 0 ? (
-                <ul
+          <div className="mx-auto flex max-w-container items-start justify-between section-x">
+            {/* Logo spacer — same markup as the real logo to match its width */}
+            <span className="invisible text-xl font-black tracking-widest">{company.name}</span>
+
+            {/* Sub-columns — one per nav item, each same width as the nav link above */}
+            <ul className="flex">
+              {nav.map((item) => (
+                <li
                   key={item.label}
-                  className="w-44 flex flex-col gap-2 py-6"
                   onMouseEnter={() => setHovered(item.label)}
+                  className="flex flex-col gap-2 py-5"
+                  style={{ minWidth: '0', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}
                 >
                   {hovered === item.label &&
                     item.children.map((c) => (
-                      <li key={c.label + c.to}>
-                        <Link
-                          to={c.to}
-                          className="block text-sm text-neutral-500 dark:text-dark-muted transition hover:text-neutral-900 dark:hover:text-okrr-cloud hover:font-semibold"
-                        >
-                          {c.label}
-                        </Link>
-                      </li>
+                      <Link
+                        key={c.label + c.to}
+                        to={c.to}
+                        className="block whitespace-nowrap text-sm text-neutral-500 dark:text-dark-muted transition hover:text-neutral-900 dark:hover:text-okrr-cloud hover:font-semibold"
+                      >
+                        {c.label}
+                      </Link>
                     ))}
-                </ul>
-              ) : (
-                <div key={item.label} className="w-44" onMouseEnter={() => setHovered(item.label)} />
-              ),
-            )}
+                </li>
+              ))}
+            </ul>
+
+            {/* Controls spacer */}
+            <div className="invisible flex items-center gap-2">
+              <ThemePicker />
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </nav>

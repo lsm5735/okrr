@@ -32,24 +32,10 @@
         document.documentElement.style.setProperty('--palette-bg-rgb', rgb)
       })()
     </script>
-    <script type="module" crossorigin src="/04/assets/index-B_h2v-Qe.js"></script>
+    <script type="module" crossorigin src="/04/assets/index-DNY0XG1D.js"></script>
     <link rel="stylesheet" crossorigin href="/04/assets/index-BcldEJZe.css">
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      // 카카오 implicit flow 콜백 처리 — React 로드 전에 실행
-      ;(function () {
-        var hash = window.location.hash
-        if (hash && hash.indexOf('access_token=') !== -1) {
-          var params = new URLSearchParams(hash.slice(1))
-          var token = params.get('access_token')
-          if (token) {
-            sessionStorage.setItem('kakao_token', token)
-            window.history.replaceState({}, '', window.location.pathname)
-          }
-        }
-      })()
-    </script>
   </body>
 </html>

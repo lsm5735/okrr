@@ -40,14 +40,12 @@ export default function Login() {
     }
   }
 
-  const handleKakao = () => {
-    const params = new URLSearchParams({
-      response_type: 'token',
-      client_id: '2aa437aa7e2387b873cb814075ebf2c3',
-      redirect_uri: 'https://lsm5735.github.io/04/',
-      scope: 'profile_nickname,profile_image',
+  const handleKakao = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: { redirectTo: 'https://lsm5735.github.io/04/' },
     })
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?${params}`
+    if (error) setError('카카오 로그인 오류: ' + error.message)
   }
 
   return (

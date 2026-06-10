@@ -46,7 +46,7 @@ export default function Login() {
       const Kakao = window.Kakao
       if (!Kakao) { setError('카카오 SDK 로딩 실패'); return }
       if (!Kakao.isInitialized()) {
-        Kakao.init('2aa437aa7e2387b873cb814075ebf2c3')
+        Kakao.init('5a37f4dbb140908763aee8aff7536bac')
       }
 
       Kakao.Auth.login({

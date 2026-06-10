@@ -57,27 +57,29 @@ export default function Login() {
             Kakao.API.request({
               url: '/v2/user/me',
               success: async (res) => {
-                const kakaoId   = res.id
-                const nickname  = res.kakao_account?.profile?.nickname || '카카오사용자'
-                // 카카오 ID 기반 Supabase 계정 생성/로그인
+                const kakaoId  = res.id
+                const nickname = res.kakao_account?.profile?.nickname || '카카오사용자'
                 const fakeEmail = `kakao_${kakaoId}@okrr.kakao`
                 const fakePw    = btoa(`okrr_kakao_${kakaoId}_2026`).slice(0, 32)
 
-                let result = await supabase.auth.signInWithPassword({
+                // 기존 계정 로그인 시도
+                let { data, error } = await supabase.auth.signInWithPassword({
                   email: fakeEmail,
                   password: fakePw,
                 })
 
-                if (result.error) {
-                  // 첫 로그인 — 계정 생성
-                  result = await supabase.auth.signUp({
+                // 계정 없으면 신규 가입 (autoconfirm=true 이므로 즉시 세션 발급)
+                if (error) {
+                  const signup = await supabase.auth.signUp({
                     email: fakeEmail,
                     password: fakePw,
                     options: { data: { nickname, provider: 'kakao' } },
                   })
+                  data  = signup.data
+                  error = signup.error
                 }
 
-                if (result.error) {
+                if (error || !data.session) {
                   setError('카카오 로그인 처리 중 오류가 발생했습니다.')
                 } else {
                   navigate(from, { replace: true })

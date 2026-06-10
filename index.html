@@ -35,20 +35,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      // 카카오 implicit flow 콜백 처리 — React 로드 전에 실행
-      ;(function () {
-        var hash = window.location.hash
-        if (hash && hash.indexOf('access_token=') !== -1) {
-          var params = new URLSearchParams(hash.slice(1))
-          var token = params.get('access_token')
-          if (token) {
-            sessionStorage.setItem('kakao_token', token)
-            window.history.replaceState({}, '', window.location.pathname)
-          }
-        }
-      })()
-    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

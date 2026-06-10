@@ -11,6 +11,7 @@ import Videos from './pages/Videos'
 import Artists from './pages/Artists'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
+import KakaoCallback from './pages/KakaoCallback'
 import BoardList from './pages/board/BoardList'
 import BoardDetail from './pages/board/BoardDetail'
 import BoardWrite from './pages/board/BoardWrite'
@@ -45,6 +46,7 @@ export default function App() {
           <Route path="/artists" element={<Artists />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/kakao" element={<KakaoCallback />} />
 
           {/* Board — redirect /board → /board/free */}
           <Route path="/board" element={<Navigate to="/board/free" replace />} />

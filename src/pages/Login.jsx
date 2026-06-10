@@ -40,70 +40,14 @@ export default function Login() {
     }
   }
 
-  const handleKakao = async () => {
-    setError('')
-    try {
-      const Kakao = window.Kakao
-      if (!Kakao) { setError('카카오 SDK 로딩 실패'); return }
-      if (!Kakao.isInitialized()) {
-        Kakao.init('5a37f4dbb140908763aee8aff7536bac')
-      }
-
-      Kakao.Auth.login({
-        scope: 'profile_nickname,profile_image',
-        success: async (authObj) => {
-          try {
-            // 카카오 사용자 정보 조회
-            Kakao.API.request({
-              url: '/v2/user/me',
-              success: async (res) => {
-                const kakaoId  = res.id
-                const nickname = res.kakao_account?.profile?.nickname
-                  || res.properties?.nickname
-                  || '카카오사용자'
-                const fakeEmail = `kakao${kakaoId}@kakaouser.com`
-                const fakePw    = btoa(`okrr_${kakaoId}_2026`).slice(0, 32)
-
-                // 기존 계정 로그인 시도
-                let { data, error } = await supabase.auth.signInWithPassword({
-                  email: fakeEmail,
-                  password: fakePw,
-                })
-
-                // 신규 가입
-                if (error) {
-                  const signup = await supabase.auth.signUp({
-                    email: fakeEmail,
-                    password: fakePw,
-                    options: { data: { nickname, provider: 'kakao' } },
-                  })
-                  data  = signup.data
-                  error = signup.error
-                }
-
-                if (error) {
-                  setError(`오류: ${error.message}`)
-                } else if (!data.session) {
-                  setError('세션 생성 실패 — 관리자에게 문의하세요.')
-                } else {
-                  navigate(from, { replace: true })
-                }
-              },
-              fail: (err) => setError(`카카오 인증 실패: ${JSON.stringify(err)}`),
-            })
-          } catch {
-            setError('카카오 로그인 처리 중 오류가 발생했습니다.')
-          }
-        },
-        fail: (err) => {
-          if (err?.error !== 'access_denied') {
-            setError('카카오 로그인에 실패했습니다.')
-          }
-        },
-      })
-    } catch {
-      setError('카카오 로그인을 시작할 수 없습니다.')
-    }
+  const handleKakao = () => {
+    const params = new URLSearchParams({
+      response_type: 'code',
+      client_id: '2aa437aa7e2387b873cb814075ebf2c3',
+      redirect_uri: 'https://lsm5735.github.io/04/kakao',
+      scope: 'profile_nickname,profile_image',
+    })
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?${params}`
   }
 
   return (

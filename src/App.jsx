@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
@@ -16,6 +17,36 @@ import BoardDetail from './pages/board/BoardDetail'
 import BoardWrite from './pages/board/BoardWrite'
 import BoardEdit from './pages/board/BoardEdit'
 import { useAuth } from './context/AuthContext'
+import { supabase } from './lib/supabase'
+
+function KakaoHandler() {
+  const navigate = useNavigate()
+  useEffect(() => {
+    const token = sessionStorage.getItem('kakao_token')
+    if (!token) return
+    sessionStorage.removeItem('kakao_token')
+    ;(async () => {
+      try {
+        const res  = await fetch('https://kapi.kakao.com/v2/user/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        const info     = await res.json()
+        const kakaoId  = info.id
+        const nickname = info.kakao_account?.profile?.nickname || info.properties?.nickname || '카카오사용자'
+        const email    = `kakao${kakaoId}@kakaouser.com`
+        const pw       = btoa(`okrr_${kakaoId}_2026`).slice(0, 32)
+
+        let { data, error } = await supabase.auth.signInWithPassword({ email, password: pw })
+        if (error) {
+          const s = await supabase.auth.signUp({ email, password: pw, options: { data: { nickname, provider: 'kakao' } } })
+          data = s.data; error = s.error
+        }
+        if (!error && data.session) navigate('/board/free', { replace: true })
+      } catch { /* 실패 시 홈 유지 */ }
+    })()
+  }, [])
+  return null
+}
 
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
@@ -27,6 +58,7 @@ function PrivateRoute({ children }) {
 export default function App() {
   return (
     <div className="min-w-[320px]">
+      <KakaoHandler />
       <ScrollToTop />
       <Header />
       <main>

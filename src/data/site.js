@@ -61,7 +61,11 @@ export const nav = [
   {
     label: 'Board',
     to: '/board',
-    children: [],
+    children: [
+      { label: '공지사항', to: '/board/notice' },
+      { label: '자유게시판', to: '/board/free' },
+      { label: 'Q&A', to: '/board/qna' },
+    ],
   },
 ]
 

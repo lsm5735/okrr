@@ -20,7 +20,7 @@ import { useAuth } from './context/AuthContext'
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth()
   if (loading) return null
-  if (!user) return <Navigate to="/login" state={{ from: window.location.hash.slice(1) }} replace />
+  if (!user) return <Navigate to="/login" replace />
   return children
 }
 
@@ -44,13 +44,14 @@ export default function App() {
 
           <Route path="/artists" element={<Artists />} />
           <Route path="/contact" element={<Contact />} />
-
           <Route path="/login" element={<Login />} />
 
-          <Route path="/board" element={<BoardList />} />
-          <Route path="/board/write" element={<PrivateRoute><BoardWrite /></PrivateRoute>} />
-          <Route path="/board/edit/:id" element={<PrivateRoute><BoardEdit /></PrivateRoute>} />
-          <Route path="/board/:id" element={<BoardDetail />} />
+          {/* Board — redirect /board → /board/free */}
+          <Route path="/board" element={<Navigate to="/board/free" replace />} />
+          <Route path="/board/:category" element={<BoardList />} />
+          <Route path="/board/:category/write" element={<PrivateRoute><BoardWrite /></PrivateRoute>} />
+          <Route path="/board/:category/edit/:id" element={<PrivateRoute><BoardEdit /></PrivateRoute>} />
+          <Route path="/board/:category/:id" element={<BoardDetail />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

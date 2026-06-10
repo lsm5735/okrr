@@ -3,15 +3,17 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
 
+const CATEGORY_LABEL = { notice: '공지사항', free: '자유게시판', qna: 'Q&A' }
+
 export default function BoardDetail() {
-  const { id } = useParams()
+  const { category = 'free', id } = useParams()
   const navigate = useNavigate()
   const { user } = useAuth()
 
-  const [post, setPost] = useState(null)
-  const [comments, setComments] = useState([])
+  const [post, setPost]           = useState(null)
+  const [comments, setComments]   = useState([])
   const [commentText, setCommentText] = useState('')
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading]     = useState(true)
   const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
@@ -20,19 +22,13 @@ export default function BoardDetail() {
   }, [id])
 
   const fetchPost = async () => {
-    // Increment views
     await supabase.rpc('increment_views', { post_id: parseInt(id) })
-
     const { data, error } = await supabase
       .from('posts')
       .select('*')
       .eq('id', id)
       .single()
-
-    if (error || !data) {
-      navigate('/board')
-      return
-    }
+    if (error || !data) { navigate(`/board/${category}`); return }
     setPost(data)
     setLoading(false)
   }
@@ -49,26 +45,21 @@ export default function BoardDetail() {
   const handleDelete = async () => {
     if (!confirm('정말 삭제하시겠습니까?')) return
     await supabase.from('posts').delete().eq('id', id)
-    navigate('/board')
+    navigate(`/board/${category}`)
   }
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault()
     if (!commentText.trim()) return
     setSubmitting(true)
-
-    const nickname = user.user_metadata?.nickname || user.email.split('@')[0]
+    const nickname = user.user_metadata?.nickname || user.user_metadata?.full_name || user.email.split('@')[0]
     const { error } = await supabase.from('comments').insert({
       post_id: parseInt(id),
       user_id: user.id,
       content: commentText.trim(),
       author_name: nickname,
     })
-
-    if (!error) {
-      setCommentText('')
-      fetchComments()
-    }
+    if (!error) { setCommentText(''); fetchComments() }
     setSubmitting(false)
   }
 
@@ -77,9 +68,9 @@ export default function BoardDetail() {
     fetchComments()
   }
 
-  const formatDate = (iso) => {
+  const fmt = (iso) => {
     const d = new Date(iso)
-    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+    return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
   }
 
   if (loading) {
@@ -94,28 +85,33 @@ export default function BoardDetail() {
 
   return (
     <section className="min-h-[calc(100vh-4rem)] section-x py-16 max-w-4xl mx-auto">
-      {/* Back */}
-      <Link
-        to="/board"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-400 dark:text-dark-muted hover:text-neutral-900 dark:hover:text-okrr-cloud transition-colors mb-8 uppercase tracking-widest"
-      >
-        ← Board
-      </Link>
+
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2 text-xs text-neutral-400 dark:text-dark-muted mb-8">
+        <Link to="/board/free" className="hover:text-neutral-900 dark:hover:text-okrr-cloud transition-colors uppercase tracking-widest font-semibold">Board</Link>
+        <span>/</span>
+        <Link to={`/board/${category}`} className="hover:text-neutral-900 dark:hover:text-okrr-cloud transition-colors">{CATEGORY_LABEL[category]}</Link>
+      </div>
 
       {/* Post */}
       <div className="border-t border-neutral-900 dark:border-okrr-cloud">
         <div className="py-6 border-b border-okrr-nimbus/30 dark:border-dark-border">
-          <h1 className="text-xl font-bold text-neutral-900 dark:text-okrr-cloud mb-3">{post.title}</h1>
+          <div className="flex items-start gap-2 mb-3">
+            {category === 'notice' && (
+              <span className="mt-1 flex-shrink-0 text-xs font-bold bg-neutral-900 dark:bg-okrr-cloud text-okrr-cloud dark:text-neutral-900 px-1.5 py-0.5 rounded">공지</span>
+            )}
+            <h1 className="text-xl font-bold text-neutral-900 dark:text-okrr-cloud">{post.title}</h1>
+          </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 text-xs text-neutral-400 dark:text-dark-muted">
               <span>{post.author_name || '익명'}</span>
-              <span>{formatDate(post.created_at)}</span>
+              <span>{fmt(post.created_at)}</span>
               <span>조회 {post.views}</span>
             </div>
             {isAuthor && (
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => navigate(`/board/edit/${post.id}`)}
+                  onClick={() => navigate(`/board/${category}/edit/${post.id}`)}
                   className="text-xs text-neutral-500 dark:text-dark-muted hover:text-neutral-900 dark:hover:text-okrr-cloud transition-colors"
                 >
                   수정
@@ -152,7 +148,7 @@ export default function BoardDetail() {
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1.5">
                     <span className="text-xs font-semibold text-neutral-900 dark:text-okrr-cloud">{c.author_name || '익명'}</span>
-                    <span className="text-xs text-neutral-400 dark:text-dark-muted">{formatDate(c.created_at)}</span>
+                    <span className="text-xs text-neutral-400 dark:text-dark-muted">{fmt(c.created_at)}</span>
                   </div>
                   <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">{c.content}</p>
                 </div>
@@ -169,7 +165,6 @@ export default function BoardDetail() {
           </div>
         )}
 
-        {/* Comment form */}
         {user ? (
           <form onSubmit={handleCommentSubmit} className="flex gap-3">
             <textarea
@@ -190,7 +185,7 @@ export default function BoardDetail() {
         ) : (
           <p className="text-sm text-neutral-400 dark:text-dark-muted">
             댓글을 작성하려면{' '}
-            <Link to="/login" state={{ from: `/board/${id}` }} className="underline hover:text-neutral-900 dark:hover:text-okrr-cloud">
+            <Link to="/login" state={{ from: `/board/${category}/${id}` }} className="underline hover:text-neutral-900 dark:hover:text-okrr-cloud">
               로그인
             </Link>
             이 필요합니다.

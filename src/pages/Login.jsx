@@ -1,49 +1,51 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { supabase } from '../lib/supabase'
 
 export default function Login() {
-  const [mode, setMode] = useState('login') // 'login' | 'signup'
-  const [email, setEmail] = useState('')
+  const [mode, setMode]         = useState('login')
+  const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [nickname, setNickname] = useState('')
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [error, setError]       = useState('')
+  const [message, setMessage]   = useState('')
+  const [loading, setLoading]   = useState(false)
 
   const { signIn, signUp } = useAuth()
-  const navigate = useNavigate()
-  const location = useLocation()
-  const from = location.state?.from || '/board'
+  const navigate  = useNavigate()
+  const location  = useLocation()
+  const from      = location.state?.from || '/board/free'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError('')
-    setMessage('')
-    setLoading(true)
-
+    setError(''); setMessage(''); setLoading(true)
     try {
       if (mode === 'login') {
         await signIn(email, password)
         navigate(from, { replace: true })
       } else {
-        if (!nickname.trim()) {
-          setError('닉네임을 입력해주세요.')
-          setLoading(false)
-          return
-        }
+        if (!nickname.trim()) { setError('닉네임을 입력해주세요.'); setLoading(false); return }
         await signUp(email, password, nickname)
         setMessage('가입 확인 이메일을 발송했습니다. 이메일을 확인해주세요.')
       }
     } catch (err) {
       const msg = err.message
       if (msg.includes('Invalid login credentials')) setError('이메일 또는 비밀번호가 올바르지 않습니다.')
-      else if (msg.includes('User already registered')) setError('이미 가입된 이메일입니다.')
-      else if (msg.includes('Password should be')) setError('비밀번호는 6자 이상이어야 합니다.')
+      else if (msg.includes('User already registered'))  setError('이미 가입된 이메일입니다.')
+      else if (msg.includes('Password should be'))       setError('비밀번호는 6자 이상이어야 합니다.')
       else setError(msg)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleKakao = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: { redirectTo: 'https://lsm5735.github.io/04/' },
+    })
+    if (error) setError('카카오 로그인에 실패했습니다.')
   }
 
   return (
@@ -53,8 +55,27 @@ export default function Login() {
           {mode === 'login' ? 'Sign In' : 'Sign Up'}
         </h1>
 
+        {/* Kakao login */}
+        <button
+          type="button"
+          onClick={handleKakao}
+          className="w-full flex items-center justify-center gap-3 bg-[#FEE500] hover:bg-[#F6DC00] text-[#191919] font-bold text-sm py-3 rounded transition-colors mb-6"
+        >
+          {/* Kakao mark */}
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fillRule="evenodd" clipRule="evenodd" d="M9 0.5C4.306 0.5 0.5 3.468 0.5 7.125c0 2.36 1.558 4.432 3.91 5.607L3.37 15.9a.3.3 0 0 0 .437.332L7.99 13.64c.33.04.667.06 1.01.06 4.694 0 8.5-2.968 8.5-6.625C17.5 3.468 13.694.5 9 .5z" fill="#191919"/>
+          </svg>
+          카카오로 로그인
+        </button>
+
+        <div className="flex items-center gap-3 mb-6">
+          <div className="flex-1 h-px bg-okrr-nimbus/40 dark:bg-dark-border" />
+          <span className="text-xs text-neutral-400 dark:text-dark-muted">또는</span>
+          <div className="flex-1 h-px bg-okrr-nimbus/40 dark:bg-dark-border" />
+        </div>
+
         {/* Tab */}
-        <div className="flex border-b border-okrr-nimbus/40 dark:border-dark-border mb-8">
+        <div className="flex border-b border-okrr-nimbus/40 dark:border-dark-border mb-6">
           <button
             type="button"
             onClick={() => { setMode('login'); setError(''); setMessage('') }}
@@ -64,7 +85,7 @@ export default function Login() {
                 : 'text-neutral-400 dark:text-dark-muted hover:text-neutral-700 dark:hover:text-okrr-cloud'
             }`}
           >
-            로그인
+            이메일 로그인
           </button>
           <button
             type="button"
@@ -118,12 +139,8 @@ export default function Login() {
             />
           </div>
 
-          {error && (
-            <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
-          )}
-          {message && (
-            <p className="text-sm text-green-600 dark:text-green-400">{message}</p>
-          )}
+          {error   && <p className="text-sm text-red-500 dark:text-red-400">{error}</p>}
+          {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
 
           <button
             type="submit"

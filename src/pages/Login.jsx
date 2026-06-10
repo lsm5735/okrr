@@ -13,9 +13,9 @@ export default function Login() {
   const [loading, setLoading]   = useState(false)
 
   const { signIn, signUp } = useAuth()
-  const navigate  = useNavigate()
-  const location  = useLocation()
-  const from      = location.state?.from || '/board/free'
+  const navigate = useNavigate()
+  const location = useLocation()
+  const from     = location.state?.from || '/board/free'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -40,14 +40,11 @@ export default function Login() {
     }
   }
 
-  const handleKakao = () => {
-    const params = new URLSearchParams({
-      response_type: 'code',
-      client_id: '2aa437aa7e2387b873cb814075ebf2c3',
-      redirect_uri: 'https://lsm5735.github.io/04/',
-      scope: 'profile_nickname,profile_image',
+  const handleKakao = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: { redirectTo: window.location.origin + window.location.pathname },
     })
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?${params}`
   }
 
   return (
@@ -57,14 +54,12 @@ export default function Login() {
           {mode === 'login' ? 'Sign In' : 'Sign Up'}
         </h1>
 
-        {/* Kakao login */}
         <button
           type="button"
           onClick={handleKakao}
           className="w-full flex items-center justify-center gap-3 bg-[#FEE500] hover:bg-[#F6DC00] text-[#191919] font-bold text-sm py-3 rounded transition-colors mb-6"
         >
-          {/* Kakao mark */}
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
             <path fillRule="evenodd" clipRule="evenodd" d="M9 0.5C4.306 0.5 0.5 3.468 0.5 7.125c0 2.36 1.558 4.432 3.91 5.607L3.37 15.9a.3.3 0 0 0 .437.332L7.99 13.64c.33.04.667.06 1.01.06 4.694 0 8.5-2.968 8.5-6.625C17.5 3.468 13.694.5 9 .5z" fill="#191919"/>
           </svg>
           카카오로 로그인
@@ -76,28 +71,13 @@ export default function Login() {
           <div className="flex-1 h-px bg-okrr-nimbus/40 dark:bg-dark-border" />
         </div>
 
-        {/* Tab */}
         <div className="flex border-b border-okrr-nimbus/40 dark:border-dark-border mb-6">
-          <button
-            type="button"
-            onClick={() => { setMode('login'); setError(''); setMessage('') }}
-            className={`flex-1 pb-3 text-sm font-semibold transition-colors ${
-              mode === 'login'
-                ? 'border-b-2 border-neutral-900 dark:border-okrr-cloud text-neutral-900 dark:text-okrr-cloud'
-                : 'text-neutral-400 dark:text-dark-muted hover:text-neutral-700 dark:hover:text-okrr-cloud'
-            }`}
-          >
+          <button type="button" onClick={() => { setMode('login'); setError(''); setMessage('') }}
+            className={`flex-1 pb-3 text-sm font-semibold transition-colors ${mode === 'login' ? 'border-b-2 border-neutral-900 dark:border-okrr-cloud text-neutral-900 dark:text-okrr-cloud' : 'text-neutral-400 dark:text-dark-muted hover:text-neutral-700 dark:hover:text-okrr-cloud'}`}>
             이메일 로그인
           </button>
-          <button
-            type="button"
-            onClick={() => { setMode('signup'); setError(''); setMessage('') }}
-            className={`flex-1 pb-3 text-sm font-semibold transition-colors ${
-              mode === 'signup'
-                ? 'border-b-2 border-neutral-900 dark:border-okrr-cloud text-neutral-900 dark:text-okrr-cloud'
-                : 'text-neutral-400 dark:text-dark-muted hover:text-neutral-700 dark:hover:text-okrr-cloud'
-            }`}
-          >
+          <button type="button" onClick={() => { setMode('signup'); setError(''); setMessage('') }}
+            className={`flex-1 pb-3 text-sm font-semibold transition-colors ${mode === 'signup' ? 'border-b-2 border-neutral-900 dark:border-okrr-cloud text-neutral-900 dark:text-okrr-cloud' : 'text-neutral-400 dark:text-dark-muted hover:text-neutral-700 dark:hover:text-okrr-cloud'}`}>
             회원가입
           </button>
         </div>
@@ -106,49 +86,24 @@ export default function Login() {
           {mode === 'signup' && (
             <div>
               <label className="block text-xs font-semibold text-neutral-500 dark:text-dark-muted mb-1.5">닉네임</label>
-              <input
-                type="text"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-                placeholder="사용할 닉네임"
-                className="w-full border border-okrr-nimbus/50 dark:border-dark-border bg-transparent rounded px-3 py-2.5 text-sm text-neutral-900 dark:text-okrr-cloud placeholder-neutral-400 dark:placeholder-dark-muted focus:outline-none focus:border-neutral-900 dark:focus:border-okrr-cloud transition-colors"
-                required
-              />
+              <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="사용할 닉네임"
+                className="w-full border border-okrr-nimbus/50 dark:border-dark-border bg-transparent rounded px-3 py-2.5 text-sm text-neutral-900 dark:text-okrr-cloud placeholder-neutral-400 dark:placeholder-dark-muted focus:outline-none focus:border-neutral-900 dark:focus:border-okrr-cloud transition-colors" required />
             </div>
           )}
-
           <div>
             <label className="block text-xs font-semibold text-neutral-500 dark:text-dark-muted mb-1.5">이메일</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="email@example.com"
-              className="w-full border border-okrr-nimbus/50 dark:border-dark-border bg-transparent rounded px-3 py-2.5 text-sm text-neutral-900 dark:text-okrr-cloud placeholder-neutral-400 dark:placeholder-dark-muted focus:outline-none focus:border-neutral-900 dark:focus:border-okrr-cloud transition-colors"
-              required
-            />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email@example.com"
+              className="w-full border border-okrr-nimbus/50 dark:border-dark-border bg-transparent rounded px-3 py-2.5 text-sm text-neutral-900 dark:text-okrr-cloud placeholder-neutral-400 dark:placeholder-dark-muted focus:outline-none focus:border-neutral-900 dark:focus:border-okrr-cloud transition-colors" required />
           </div>
-
           <div>
             <label className="block text-xs font-semibold text-neutral-500 dark:text-dark-muted mb-1.5">비밀번호</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="6자 이상"
-              className="w-full border border-okrr-nimbus/50 dark:border-dark-border bg-transparent rounded px-3 py-2.5 text-sm text-neutral-900 dark:text-okrr-cloud placeholder-neutral-400 dark:placeholder-dark-muted focus:outline-none focus:border-neutral-900 dark:focus:border-okrr-cloud transition-colors"
-              required
-            />
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="6자 이상"
+              className="w-full border border-okrr-nimbus/50 dark:border-dark-border bg-transparent rounded px-3 py-2.5 text-sm text-neutral-900 dark:text-okrr-cloud placeholder-neutral-400 dark:placeholder-dark-muted focus:outline-none focus:border-neutral-900 dark:focus:border-okrr-cloud transition-colors" required />
           </div>
-
           {error   && <p className="text-sm text-red-500 dark:text-red-400">{error}</p>}
           {message && <p className="text-sm text-green-600 dark:text-green-400">{message}</p>}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-2 w-full bg-neutral-900 dark:bg-okrr-cloud text-okrr-cloud dark:text-neutral-900 py-2.5 text-sm font-bold tracking-widest uppercase rounded hover:bg-neutral-700 dark:hover:bg-okrr-nimbus transition-colors disabled:opacity-50"
-          >
+          <button type="submit" disabled={loading}
+            className="mt-2 w-full bg-neutral-900 dark:bg-okrr-cloud text-okrr-cloud dark:text-neutral-900 py-2.5 text-sm font-bold tracking-widest uppercase rounded hover:bg-neutral-700 dark:hover:bg-okrr-nimbus transition-colors disabled:opacity-50">
             {loading ? '처리 중...' : mode === 'login' ? '로그인' : '가입하기'}
           </button>
         </form>

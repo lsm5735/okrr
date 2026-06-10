@@ -40,11 +40,14 @@ export default function Login() {
     }
   }
 
-  const handleKakao = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: { redirectTo: window.location.origin + window.location.pathname },
+  const handleKakao = () => {
+    const params = new URLSearchParams({
+      response_type: 'token',
+      client_id: '2aa437aa7e2387b873cb814075ebf2c3',
+      redirect_uri: 'https://lsm5735.github.io/04/',
+      scope: 'profile_nickname,profile_image',
     })
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?${params}`
   }
 
   return (

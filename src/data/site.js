@@ -58,6 +58,11 @@ export const nav = [
     to: '/contact',
     children: [],
   },
+  {
+    label: 'Board',
+    to: '/board',
+    children: [],
+  },
 ]
 
 export const businessAreas = [

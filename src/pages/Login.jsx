@@ -41,14 +41,63 @@ export default function Login() {
   }
 
   const handleKakao = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: {
-        redirectTo: 'https://lsm5735.github.io/04/',
-        scopes: 'profile',
-      },
-    })
-    if (error) setError('카카오 로그인에 실패했습니다.')
+    setError('')
+    try {
+      const Kakao = window.Kakao
+      if (!Kakao) { setError('카카오 SDK 로딩 실패'); return }
+      if (!Kakao.isInitialized()) {
+        Kakao.init('2aa437aa7e2387b873cb814075ebf2c3')
+      }
+
+      Kakao.Auth.login({
+        scope: 'profile_nickname,profile_image',
+        success: async (authObj) => {
+          try {
+            // 카카오 사용자 정보 조회
+            Kakao.API.request({
+              url: '/v2/user/me',
+              success: async (res) => {
+                const kakaoId   = res.id
+                const nickname  = res.kakao_account?.profile?.nickname || '카카오사용자'
+                // 카카오 ID 기반 Supabase 계정 생성/로그인
+                const fakeEmail = `kakao_${kakaoId}@okrr.kakao`
+                const fakePw    = btoa(`okrr_kakao_${kakaoId}_2026`).slice(0, 32)
+
+                let result = await supabase.auth.signInWithPassword({
+                  email: fakeEmail,
+                  password: fakePw,
+                })
+
+                if (result.error) {
+                  // 첫 로그인 — 계정 생성
+                  result = await supabase.auth.signUp({
+                    email: fakeEmail,
+                    password: fakePw,
+                    options: { data: { nickname, provider: 'kakao' } },
+                  })
+                }
+
+                if (result.error) {
+                  setError('카카오 로그인 처리 중 오류가 발생했습니다.')
+                } else {
+                  navigate(from, { replace: true })
+                }
+              },
+              fail: () => setError('카카오 사용자 정보를 가져올 수 없습니다.'),
+            })
+          } catch {
+            setError('카카오 로그인 처리 중 오류가 발생했습니다.')
+          }
+        },
+        fail: (err) => {
+          if (err?.error !== 'access_denied') {
+            setError('카카오 로그인에 실패했습니다.')
+          }
+        },
+      })
+    } catch {
+      setError('카카오 로그인을 시작할 수 없습니다.')
+    }
   }
 
   return (

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 const REST_API_KEY = '2aa437aa7e2387b873cb814075ebf2c3'
-const REDIRECT_URI = 'https://lsm5735.github.io/04/kakao'
+const REDIRECT_URI = 'https://lsm5735.github.io/04/'
 
 export default function KakaoCallback() {
   const [status, setStatus] = useState('카카오 로그인 처리 중...')

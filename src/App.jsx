@@ -10,6 +10,19 @@ import Works from './pages/Works'
 import Videos from './pages/Videos'
 import Artists from './pages/Artists'
 import Contact from './pages/Contact'
+import Login from './pages/Login'
+import BoardList from './pages/board/BoardList'
+import BoardDetail from './pages/board/BoardDetail'
+import BoardWrite from './pages/board/BoardWrite'
+import BoardEdit from './pages/board/BoardEdit'
+import { useAuth } from './context/AuthContext'
+
+function PrivateRoute({ children }) {
+  const { user, loading } = useAuth()
+  if (loading) return null
+  if (!user) return <Navigate to="/login" state={{ from: window.location.hash.slice(1) }} replace />
+  return children
+}
 
 export default function App() {
   return (
@@ -31,6 +44,13 @@ export default function App() {
 
           <Route path="/artists" element={<Artists />} />
           <Route path="/contact" element={<Contact />} />
+
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/board" element={<BoardList />} />
+          <Route path="/board/write" element={<PrivateRoute><BoardWrite /></PrivateRoute>} />
+          <Route path="/board/edit/:id" element={<PrivateRoute><BoardEdit /></PrivateRoute>} />
+          <Route path="/board/:id" element={<BoardDetail />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

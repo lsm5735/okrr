@@ -43,7 +43,10 @@ export default function Login() {
   const handleKakao = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
-      options: { redirectTo: 'https://lsm5735.github.io/04/' },
+      options: {
+        redirectTo: 'https://lsm5735.github.io/04/',
+        scopes: 'profile',
+      },
     })
     if (error) setError('카카오 로그인에 실패했습니다.')
   }

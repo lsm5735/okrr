@@ -107,9 +107,9 @@ export const videos = [
     category: 'event',
     title: '김포복지재단×사랑의열매 제13회 62일간의 나눔릴레이',
     description: '당신의 Gate, 김포의 Gates_세상에 온기를 여는 김포의 문',
-    videoId: 'ld_miMfhuNY',
+    videoId: 'WU24a0HyZCg',
     thumbnail: '',
-    date: '2024',
+    date: '2025',
   },
 ]
 

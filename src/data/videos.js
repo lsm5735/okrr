@@ -18,7 +18,7 @@ export const videos = [
     description: '한영수교 140주년 기념 브리티쉬 솔아트 전시 하이라이트 영상',
     videoId: 'yunKW-nrtTQ',
     thumbnail: '',
-    date: '2023.11',
+    date: '2024',
   },
   {
     id: 2,

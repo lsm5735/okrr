@@ -52,6 +52,7 @@ function CategoryHeader({ category }) {
 
 const categoryLabelMap = {
   exhibition: '전시 기획',
+  event: '행사 기획',
   consulting: '아트 컨설팅',
   decoration: '미술 장식품',
   artist: '아티스트 에이전시',

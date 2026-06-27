@@ -373,9 +373,8 @@ function ContactBand() {
 }
 
 function VideosPreview() {
-  // 나눔릴레이 (id:11), British Soul Art (id:1), 하루컴퍼니 (id:7)
   const preview = [11, 1, 7].map((id) => videos.find((v) => v.id === id)).filter(Boolean)
-  const isPlaceholder = (id) => id === 'ld_miMfhuNY' || id.startsWith('VIDEO_ID')
+  const [playing, setPlaying] = useState(null)
 
   return (
     <section className="section-y bg-white dark:bg-dark-surface">
@@ -405,14 +404,15 @@ function VideosPreview() {
                   onError={(e) => { e.target.style.display = 'none' }}
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors" />
-                <Link
-                  to="/videos/all"
+                <button
+                  type="button"
+                  onClick={() => setPlaying(v)}
                   className="absolute inset-0 flex items-center justify-center"
                 >
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-lg transition-transform group-hover:scale-110">
                     ▷
                   </span>
-                </Link>
+                </button>
               </div>
               <div className="p-4">
                 <p className="text-xs text-neutral-400 dark:text-dark-muted mb-1">{v.date}</p>
@@ -424,6 +424,37 @@ function VideosPreview() {
           ))}
         </div>
       </div>
+
+      {/* Video modal */}
+      {playing && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setPlaying(null)}
+        >
+          <div
+            className="relative w-full max-w-4xl mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setPlaying(null)}
+              className="absolute -top-10 right-0 text-white text-2xl hover:opacity-70 transition"
+            >
+              ✕
+            </button>
+            <div className="relative aspect-video">
+              <iframe
+                src={`https://www.youtube.com/embed/${playing.videoId}?autoplay=1`}
+                title={playing.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full rounded-xl"
+              />
+            </div>
+            <p className="mt-3 text-sm font-semibold text-white">{playing.title}</p>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

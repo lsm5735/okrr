@@ -106,8 +106,12 @@ function WorkCard({ work, large = false }) {
 }
 
 function WorksList({ category }) {
-  const filtered =
-    category === 'all' ? works : works.filter((w) => w.category === category)
+  const filtered = (category === 'all' ? works : works.filter((w) => w.category === category))
+    .slice()
+    .sort((a, b) => {
+      const toNum = (p) => { const [y, m = '0'] = p.split('.'); return parseInt(y) * 100 + parseInt(m) }
+      return toNum(b.period) - toNum(a.period)
+    })
 
   if (filtered.length === 0) {
     return (

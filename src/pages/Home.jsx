@@ -250,7 +250,7 @@ function BusinessGrid() {
 }
 
 function FeaturedWorks() {
-  const featured = works.slice(0, 4)
+  const featured = [12, 1, 2, 3].map((id) => works.find((w) => w.id === id)).filter(Boolean)
   return (
     <section className="section-y">
       <div className="mx-auto max-w-container section-x">

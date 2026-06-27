@@ -92,6 +92,18 @@ export const works = [
       '갤러리아 백화점 팝업 전시의 일환으로 전시조형물 제작과 팝업전 인테리어 진행.',
     tags: ['팝업전시', '갤러리아', '설치미술'],
   },
+  // 행사 기획
+  {
+    id: 12,
+    category: 'event',
+    title: '사랑의열매 × 김포복지재단',
+    subtitle: '제13회 62일간의 나눔릴레이',
+    venue: 'Bake 29s',
+    period: '2025.12.01 — 2026.01.31',
+    description:
+      '사랑의열매와 김포복지재단이 함께하는 제13회 62일간의 나눔릴레이. 나눔캠페인 행사 기획 및 운영.',
+    tags: ['행사기획', '나눔캠페인', '사회공헌'],
+  },
   // 미술 장식품 / 공공미술
   {
     id: 9,
@@ -131,6 +143,7 @@ export const works = [
 export const workCategories = [
   { key: 'all', label: '전체', labelEn: 'All Works' },
   { key: 'exhibition', label: '전시 기획', labelEn: 'Exhibition' },
+  { key: 'event', label: '행사 기획', labelEn: 'Events' },
   { key: 'artist', label: '아티스트 에이전시', labelEn: 'Artist Agency' },
   { key: 'consulting', label: '아트 컨설팅', labelEn: 'Art Consulting' },
   { key: 'decoration', label: '미술 장식품', labelEn: 'Art Decoration' },

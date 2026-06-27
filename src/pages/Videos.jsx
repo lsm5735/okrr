@@ -151,8 +151,12 @@ function Pagination({ current, total, onPage }) {
 function VideoGrid({ category }) {
   const [page, setPage] = useState(1)
 
-  const filtered =
-    category === 'all' ? videos : videos.filter((v) => v.category === category)
+  const filtered = (category === 'all' ? videos : videos.filter((v) => v.category === category))
+    .slice()
+    .sort((a, b) => {
+      const toNum = (d) => { const [y, m = '0'] = d.split('.'); return parseInt(y) * 100 + parseInt(m) }
+      return toNum(b.date) - toNum(a.date)
+    })
 
   const totalPages = Math.ceil(filtered.length / VIDEOS_PER_PAGE)
   const paged = filtered.slice((page - 1) * VIDEOS_PER_PAGE, page * VIDEOS_PER_PAGE)

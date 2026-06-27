@@ -1,21 +1,13 @@
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { nav, company } from '../data/site'
 import ThemeToggle from './ThemeToggle'
 import ThemePicker from './ThemePicker'
-import { useAuth } from '../context/AuthContext'
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [hovered, setHovered] = useState(null)
   const [mobileExpanded, setMobileExpanded] = useState(null)
-  const { user, signOut } = useAuth()
-  const navigate = useNavigate()
-
-  const handleSignOut = async () => {
-    await signOut()
-    navigate('/')
-  }
 
   const close = () => {
     setMobileOpen(false)
@@ -88,23 +80,6 @@ export default function Header() {
           <div className="flex items-center gap-2">
             <ThemePicker />
             <ThemeToggle />
-            {/* Auth button — desktop */}
-            {user ? (
-              <button
-                type="button"
-                onClick={handleSignOut}
-                className="hidden lg:block text-xs font-semibold tracking-widest uppercase px-3 py-1.5 border border-okrr-nimbus/50 dark:border-dark-border rounded text-neutral-500 dark:text-dark-muted hover:text-neutral-900 dark:hover:text-okrr-cloud hover:border-neutral-900 dark:hover:border-okrr-cloud transition-colors"
-              >
-                Logout
-              </button>
-            ) : (
-              <Link
-                to="/login"
-                className="hidden lg:block text-xs font-semibold tracking-widest uppercase px-3 py-1.5 border border-okrr-nimbus/50 dark:border-dark-border rounded text-neutral-500 dark:text-dark-muted hover:text-neutral-900 dark:hover:text-okrr-cloud hover:border-neutral-900 dark:hover:border-okrr-cloud transition-colors"
-              >
-                Login
-              </Link>
-            )}
             {/* Hamburger */}
             <button
               type="button"
@@ -187,26 +162,6 @@ export default function Header() {
                 </li>
               ))}
             </ul>
-            {/* Auth — mobile */}
-            <div className="p-4 border-t border-okrr-nimbus/20 dark:border-dark-border">
-              {user ? (
-                <button
-                  type="button"
-                  onClick={() => { handleSignOut(); close() }}
-                  className="w-full text-sm font-semibold text-neutral-500 dark:text-dark-muted py-2 text-left hover:text-neutral-900 dark:hover:text-okrr-cloud transition-colors"
-                >
-                  로그아웃
-                </button>
-              ) : (
-                <Link
-                  to="/login"
-                  onClick={close}
-                  className="block text-sm font-semibold text-neutral-900 dark:text-okrr-cloud py-2"
-                >
-                  로그인 / 회원가입
-                </Link>
-              )}
-            </div>
           </div>
         </div>
       )}

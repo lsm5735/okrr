@@ -58,15 +58,6 @@ export const nav = [
     to: '/contact',
     children: [],
   },
-  {
-    label: 'Board',
-    to: '/board',
-    children: [
-      { label: '공지사항', to: '/board/notice' },
-      { label: '자유게시판', to: '/board/free' },
-      { label: 'Q&A', to: '/board/qna' },
-    ],
-  },
 ]
 
 export const businessAreas = [

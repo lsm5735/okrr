@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { nav, company } from '../data/site'
-import ThemeToggle from './ThemeToggle'
-import ThemePicker from './ThemePicker'
+import { nav } from '../data/site'
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -20,11 +18,12 @@ export default function Header() {
         <div className="mx-auto flex h-16 max-w-container items-center justify-between section-x">
 
           {/* Logo */}
-          <Link
-            to="/"
-            className="text-xl font-black tracking-widest text-neutral-900 dark:text-okrr-cloud uppercase"
-          >
-            {company.name}
+          <Link to="/" className="flex items-center">
+            <img
+              src={`${import.meta.env.BASE_URL}okrr_logo.png`}
+              alt="Okrr Art Agency"
+              className="h-8 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop nav — each <li> is position:relative so dropdown is anchored to it */}
@@ -78,8 +77,6 @@ export default function Header() {
 
           {/* Controls */}
           <div className="flex items-center gap-2">
-            <ThemePicker />
-            <ThemeToggle />
             {/* Hamburger */}
             <button
               type="button"
@@ -101,9 +98,11 @@ export default function Header() {
           <div className="absolute inset-0 bg-black/50" onClick={close} />
           <div className="absolute right-0 top-0 h-full w-4/5 max-w-xs overflow-y-auto bg-okrr-cloud dark:bg-dark-bg shadow-2xl">
             <div className="flex items-center justify-between p-5 border-b border-okrr-nimbus/30 dark:border-dark-border">
-              <span className="text-base font-black tracking-widest text-neutral-900 dark:text-okrr-cloud uppercase">
-                {company.name}
-              </span>
+              <img
+                src={`${import.meta.env.BASE_URL}okrr_logo.png`}
+                alt="Okrr Art Agency"
+                className="h-7 w-auto object-contain"
+              />
               <button
                 type="button"
                 aria-label="메뉴 닫기"
@@ -112,10 +111,6 @@ export default function Header() {
               >
                 ✕
               </button>
-            </div>
-            <div className="flex items-center justify-between px-5 py-4 border-b border-okrr-nimbus/20 dark:border-dark-border">
-              <span className="text-xs text-neutral-500 dark:text-dark-muted">테마 전환</span>
-              <ThemeToggle />
             </div>
             <ul className="flex flex-col p-4">
               {nav.map((item) => (

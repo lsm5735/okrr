@@ -2,7 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/04/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Okrr Art Agency — 문화예술 프로젝트 기획 및 컨설팅. 전시 기획, 아티스트 에이전시, 아트 컨설팅 전문 에이전시." />
     <link
@@ -11,26 +11,7 @@
     />
     <title>Okrr Art Agency</title>
     <script>
-      // Dark mode + palette initialization — prevent flash
-      ;(function () {
-        // Dark mode
-        const storedTheme = localStorage.getItem('okrr-theme')
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-          document.documentElement.classList.add('dark')
-        }
-        // Palette color (RGB space-separated values for CSS variables)
-        const palettes = {
-          cloud:  '239 233 225',
-          nimbus: '200 203 207',
-          rose:   '237 213 216',
-          ice:    '191 208 224',
-          aqua:   '181 196 181',
-        }
-        const stored = localStorage.getItem('okrr-palette') || 'cloud'
-        const rgb = palettes[stored] || palettes.cloud
-        document.documentElement.style.setProperty('--palette-bg-rgb', rgb)
-      })()
+      document.documentElement.style.setProperty('--palette-bg-rgb', '200 203 207')
     </script>
   </head>
   <body>

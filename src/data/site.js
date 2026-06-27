@@ -14,7 +14,7 @@ export const company = {
   ],
   contact: {
     tel: '+82 10 7698 0098',
-    email: 'miart9484@gmail.com',
+    email: 'lsm5735@gmail.com',
   },
   copyright: '© 2024 Okrr Art Agency. All rights reserved.',
   presenter: 'Mia Lee',

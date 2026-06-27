@@ -373,8 +373,8 @@ function ContactBand() {
 }
 
 function VideosPreview() {
-  // 나눔릴레이 (id:11), 서울 갤러리아 팝업전시 (id:8), 쏠비치 삼척 (id:10)
-  const preview = [11, 8, 10].map((id) => videos.find((v) => v.id === id)).filter(Boolean)
+  // 나눔릴레이 (id:11), British Soul Art (id:1), 하루컴퍼니 (id:7)
+  const preview = [11, 1, 7].map((id) => videos.find((v) => v.id === id)).filter(Boolean)
   const isPlaceholder = (id) => id === 'ld_miMfhuNY' || id.startsWith('VIDEO_ID')
 
   return (

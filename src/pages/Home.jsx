@@ -376,7 +376,7 @@ function VideosPreview() {
         <div className="mb-10 flex items-end justify-between">
           <div>
             <p className="mb-3 text-xs font-semibold tracking-[0.25em] text-neutral-400 dark:text-dark-muted uppercase">
-              Videos
+              Archive
             </p>
             <h2 className="text-4xl font-black text-neutral-900 dark:text-okrr-cloud md:text-5xl">
               Film & Media

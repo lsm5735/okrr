@@ -35,7 +35,6 @@ export default function Contact() {
             <div className="card-base p-8 flex flex-col gap-5">
               {[
                 { label: 'Email', value: company.contact.email, href: `mailto:${company.contact.email}` },
-                { label: 'Tel', value: company.contact.tel, href: `tel:${company.contact.tel.replace(/\s/g, '')}` },
               ].map((c) => (
                 <div key={c.label}>
                   <p className="mb-1 text-xs font-bold uppercase tracking-widest text-neutral-400 dark:text-dark-muted">

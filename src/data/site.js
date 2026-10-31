@@ -13,7 +13,6 @@ export const company = {
     '아티스트와 고객 간의 원활한 소통을 통해 예술의 가치를 극대화하고, 혁신적이고 창의적인 미술 프로젝트를 성공적으로 이끌어갑니다.',
   ],
   contact: {
-    tel: '',
     email: 'lsm5735@gmail.com',
   },
   copyright: '© 2024 Okrr Art Agency. All rights reserved.',
@@ -47,11 +46,6 @@ export const nav = [
       { label: '전시 영상', to: '/videos/exhibition' },
       { label: '행사 영상', to: '/videos/event' },
     ],
-  },
-  {
-    label: 'Artists',
-    to: '/artists',
-    children: [],
   },
   {
     label: 'Contact',

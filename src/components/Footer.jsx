@@ -66,7 +66,6 @@ export default function Footer() {
                 Contact
               </p>
               <ul className="flex flex-col gap-2">
-                <li className="text-sm text-neutral-600 dark:text-dark-muted">{company.contact.tel}</li>
                 <li>
                   <a
                     href={`mailto:${company.contact.email}`}

@@ -8,7 +8,6 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Works from './pages/Works'
 import Videos from './pages/Videos'
-import Artists from './pages/Artists'
 import Contact from './pages/Contact'
 
 export default function App() {
@@ -29,7 +28,6 @@ export default function App() {
           <Route path="/videos" element={<Navigate to="/videos/all" replace />} />
           <Route path="/videos/:category" element={<Videos />} />
 
-          <Route path="/artists" element={<Artists />} />
           <Route path="/contact" element={<Contact />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />

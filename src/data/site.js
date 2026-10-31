@@ -29,6 +29,11 @@ export const nav = [
     ],
   },
   {
+    label: 'Projects',
+    to: '/projects',
+    children: [],
+  },
+  {
     label: 'Works',
     to: '/works',
     children: [
@@ -36,15 +41,7 @@ export const nav = [
       { label: '아티스트 에이전시', to: '/works/artist' },
       { label: '아트 컨설팅', to: '/works/consulting' },
       { label: '미술 장식품', to: '/works/decoration' },
-    ],
-  },
-  {
-    label: 'Videos',
-    to: '/videos',
-    children: [
-      { label: '전체 영상', to: '/videos/all' },
-      { label: '전시 영상', to: '/videos/exhibition' },
-      { label: '행사 영상', to: '/videos/event' },
+      { label: 'Film & Media', to: '/works/film/all' },
     ],
   },
   {

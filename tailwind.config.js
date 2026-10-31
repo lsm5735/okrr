@@ -13,6 +13,10 @@ export default {
           rose:   '#EDD5D8', // Raindrops on Roses — accent pink
           ice:    '#BFD0E0', // Ice Melt — accent blue
           aqua:   '#B5C4B5', // Almost Aqua — accent sage
+          mint:   '#7ECEC4', // Okrr Mint — favicon
+          'mint-light': '#CFF3EC', // Upcoming Project 배경 (민트)
+          'mint-dark': '#2A9488', // Upcoming Project 라벨/버튼
+          butter: '#FFF6CF', // Upcoming Project 배경 (옅은 노랑)
         },
         // Dark mode surfaces
         dark: {

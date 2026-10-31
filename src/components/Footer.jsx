@@ -49,10 +49,10 @@ export default function Footer() {
                 Works
               </p>
               <ul className="flex flex-col gap-2">
-                {['전시 기획', '아티스트 에이전시', '아트 컨설팅', '미술 장식품'].map((label, i) => (
+                {['전시 기획', '아티스트 에이전시', '아트 컨설팅', '미술 장식품', 'Film & Media'].map((label, i) => (
                   <li key={i}>
                     <Link
-                      to={['/works/exhibition', '/works/artist', '/works/consulting', '/works/decoration'][i]}
+                      to={['/works/exhibition', '/works/artist', '/works/consulting', '/works/decoration', '/works/film/all'][i]}
                       className="text-sm text-neutral-600 dark:text-dark-muted hover:text-neutral-900 dark:hover:text-okrr-cloud transition"
                     >
                       {label}

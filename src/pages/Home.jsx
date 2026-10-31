@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { company, businessAreas } from '../data/site'
 import { works } from '../data/works'
 import { videos } from '../data/videos'
+import { upcomingProject } from '../data/projects'
 import useScrollReveal from '../hooks/useScrollReveal'
 
 // Hero slides
@@ -36,7 +37,7 @@ function Hero() {
   }, [])
 
   return (
-    <section className="relative h-[calc(100vh-4rem)] min-h-[560px] overflow-hidden">
+    <section className="relative h-[70vh] min-h-[460px] max-h-[720px] overflow-hidden">
       {slides.map((s, i) => (
         <div
           key={i}
@@ -114,54 +115,47 @@ function Hero() {
   )
 }
 
-function CountUp({ target, suffix = '', duration = 1600 }) {
-  const [display, setDisplay] = useState('0')
-  const ref = useRef(null)
-  const started = useRef(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting || started.current) return
-      started.current = true
-      const start = Date.now()
-      const num = parseInt(target.replace(/\D/g, ''), 10)
-      const tick = () => {
-        const elapsed = Date.now() - start
-        const progress = Math.min(elapsed / duration, 1)
-        const ease = 1 - Math.pow(1 - progress, 3)
-        setDisplay(Math.round(ease * num).toLocaleString() + suffix)
-        if (progress < 1) requestAnimationFrame(tick)
-      }
-      requestAnimationFrame(tick)
-    }, { threshold: 0.5 })
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [target, suffix, duration])
-
-  return <span ref={ref}>{display}</span>
-}
-
-function Stats() {
-  const stats = [
-    { target: '2017', suffix: '',  label: 'Est.' },
-    { target: '50',   suffix: '+', label: '프로젝트' },
-    { target: '100',  suffix: '+', label: '협력 작가' },
-    { target: '6',    suffix: '',  label: '사업 영역' },
-  ]
+function UpcomingProject() {
+  const p = upcomingProject
+  if (!p) return null
   return (
-    <section className="border-y border-okrr-nimbus/30 dark:border-dark-border bg-white dark:bg-dark-surface">
-      <div className="mx-auto max-w-container section-x py-10">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="text-center" data-reveal>
-              <p className="text-3xl font-black text-neutral-900 dark:text-okrr-cloud md:text-4xl">
-                <CountUp target={s.target} suffix={s.suffix} />
+    <section className="section-y bg-gradient-to-br from-okrr-mint-light via-okrr-mint-light via-75% to-okrr-butter dark:from-dark-surface dark:to-dark-bg">
+      <div className="mx-auto max-w-container section-x">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <p className="mb-3 text-xs font-semibold tracking-[0.25em] text-okrr-mint-dark uppercase">
+              Projects
+            </p>
+            <h2 className="text-4xl font-black text-neutral-900 dark:text-okrr-cloud md:text-5xl">
+              Upcoming Project
+            </h2>
+          </div>
+          <Link to="/projects" className="btn-outline shrink-0 border-okrr-mint-dark text-okrr-mint-dark hover:bg-okrr-mint-dark hover:text-white">
+            More →
+          </Link>
+        </div>
+
+        <div className="card-base overflow-hidden md:flex" data-reveal>
+          <div className="relative aspect-video md:aspect-auto md:w-1/2 md:min-h-[320px]">
+            {p.image && (
+              <img src={p.image} alt={p.title} className="absolute inset-0 h-full w-full object-cover" />
+            )}
+          </div>
+          <div className="flex flex-col justify-center gap-4 p-8 md:w-1/2 md:p-12">
+            {p.period && (
+              <p className="text-xs font-semibold tracking-widest text-neutral-400 dark:text-dark-muted uppercase">
+                {p.period}
               </p>
-              <p className="mt-1 text-xs font-medium tracking-widest text-neutral-400 dark:text-dark-muted uppercase">
-                {s.label}
-              </p>
-            </div>
-          ))}
+            )}
+            <h3 className="text-3xl font-black leading-tight text-neutral-900 dark:text-okrr-cloud md:text-4xl">
+              {p.title}
+            </h3>
+            {p.subtitle && <p className="text-base text-neutral-500 dark:text-dark-muted">{p.subtitle}</p>}
+            {p.venue && <p className="text-sm text-neutral-500 dark:text-dark-muted">{p.venue}</p>}
+            {p.description && (
+              <p className="text-sm leading-7 text-neutral-600 dark:text-dark-muted">{p.description}</p>
+            )}
+          </div>
         </div>
       </div>
     </section>
@@ -373,7 +367,7 @@ function ContactBand() {
 }
 
 function VideosPreview() {
-  const preview = [11, 1, 7].map((id) => videos.find((v) => v.id === id)).filter(Boolean)
+  const preview = [11, 7, 1].map((id) => videos.find((v) => v.id === id)).filter(Boolean)
   const [playing, setPlaying] = useState(null)
 
   return (
@@ -385,10 +379,10 @@ function VideosPreview() {
               Videos
             </p>
             <h2 className="text-4xl font-black text-neutral-900 dark:text-okrr-cloud md:text-5xl">
-              Film & Records
+              Film & Media
             </h2>
           </div>
-          <Link to="/videos/all" className="btn-outline shrink-0">
+          <Link to="/works/film/all" className="btn-outline shrink-0">
             More →
           </Link>
         </div>
@@ -398,21 +392,35 @@ function VideosPreview() {
             <div key={v.id} className="card-base overflow-hidden group">
               <div className="relative aspect-video bg-neutral-100 dark:bg-dark-border">
                 <img
-                  src={`https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`}
+                  src={v.thumbnail || `https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`}
                   alt={v.title}
                   className="absolute inset-0 h-full w-full object-cover"
                   onError={(e) => { e.target.style.display = 'none' }}
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors" />
-                <button
-                  type="button"
-                  onClick={() => setPlaying(v)}
-                  className="absolute inset-0 flex items-center justify-center"
-                >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-lg transition-transform group-hover:scale-110">
-                    ▷
-                  </span>
-                </button>
+                {v.link ? (
+                  <a
+                    href={v.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${v.title} 기사 보기`}
+                    className="absolute inset-0 flex items-end justify-end p-3"
+                  >
+                    <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-900 shadow">
+                      기사 보기 ↗
+                    </span>
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setPlaying(v)}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-lg transition-transform group-hover:scale-110">
+                      ▷
+                    </span>
+                  </button>
+                )}
               </div>
               <div className="p-4">
                 <p className="text-xs text-neutral-400 dark:text-dark-muted mb-1">{v.date}</p>
@@ -464,7 +472,7 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Stats />
+      <UpcomingProject />
       <VideosPreview />
       <AboutIntro />
       <BusinessGrid />

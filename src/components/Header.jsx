@@ -28,7 +28,7 @@ export default function Header() {
 
           {/* Desktop nav — each <li> is position:relative so dropdown is anchored to it */}
           <ul
-            className="hidden items-stretch lg:flex"
+            className="hidden items-stretch md:flex"
             onMouseLeave={() => setHovered(null)}
           >
             {nav.map((item) => (
@@ -81,7 +81,7 @@ export default function Header() {
             <button
               type="button"
               aria-label="메뉴 열기"
-              className="flex flex-col items-center justify-center gap-1.5 lg:hidden p-2"
+              className="flex flex-col items-center justify-center gap-1.5 md:hidden p-2"
               onClick={() => setMobileOpen(true)}
             >
               <span className="h-0.5 w-5 bg-neutral-800 dark:bg-okrr-cloud" />
@@ -94,7 +94,7 @@ export default function Header() {
 
       {/* Mobile panel */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 md:hidden">
           <div className="absolute inset-0 bg-black/50" onClick={close} />
           <div className="absolute right-0 top-0 h-full w-4/5 max-w-xs overflow-y-auto bg-okrr-cloud dark:bg-dark-bg shadow-2xl">
             <div className="flex items-center justify-between p-5 border-b border-okrr-nimbus/30 dark:border-dark-border">

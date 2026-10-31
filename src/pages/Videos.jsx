@@ -10,7 +10,7 @@ function TabNav({ current }) {
           {videoCategories.map((c) => (
             <li key={c.key}>
               <Link
-                to={`/videos/${c.key}`}
+                to={`/works/film/${c.key}`}
                 className={[
                   'inline-block py-4 px-1 mr-6 text-sm font-semibold border-b-2 transition-colors',
                   current === c.key
@@ -28,8 +28,49 @@ function TabNav({ current }) {
   )
 }
 
+// 영상 대신 기사 링크로 연결되는 카드
+function ArticleCard({ video }) {
+  return (
+    <a
+      href={video.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="card-base overflow-hidden group block"
+    >
+      <div className="relative aspect-video bg-neutral-100 dark:bg-dark-border">
+        <img
+          src={video.thumbnail}
+          alt={video.title}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
+        <span className="absolute bottom-3 right-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-900 shadow">
+          기사 보기 ↗
+        </span>
+      </div>
+      <div className="p-5">
+        <div className="mb-2 flex items-start justify-between gap-2">
+          <p className="text-xs font-semibold tracking-widest text-neutral-400 dark:text-dark-muted uppercase">
+            {video.date}
+          </p>
+          <span className="tag bg-okrr-nimbus/30 dark:bg-dark-surface text-neutral-500 dark:text-dark-muted text-xs">
+            기사
+          </span>
+        </div>
+        <h3 className="mb-2 font-bold leading-tight text-neutral-900 dark:text-okrr-cloud line-clamp-2">
+          {video.title}
+        </h3>
+        <p className="text-xs leading-5 text-neutral-500 dark:text-dark-muted line-clamp-2">
+          {video.description}
+        </p>
+      </div>
+    </a>
+  )
+}
+
 function VideoCard({ video }) {
   const [playing, setPlaying] = useState(false)
+  if (video.link) return <ArticleCard video={video} />
   const isPlaceholder = video.videoId.startsWith('VIDEO_ID_')
 
   const thumbUrl = video.thumbnail
@@ -205,7 +246,7 @@ const validCategories = videoCategories.map((c) => c.key)
 
 export default function Videos() {
   const { category = 'all' } = useParams()
-  if (!validCategories.includes(category)) return <Navigate to="/videos/all" replace />
+  if (!validCategories.includes(category)) return <Navigate to="/works/film/all" replace />
 
   const meta = videoCategories.find((c) => c.key === category)
 

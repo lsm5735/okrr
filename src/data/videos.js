@@ -14,10 +14,11 @@ export const videos = [
   {
     id: 1,
     category: 'exhibition',
-    title: 'British Soul Art — 한국 전시 하이라이트',
-    description: '한영수교 140주년 기념 브리티쉬 솔아트 전시 하이라이트 영상',
-    videoId: 'yunKW-nrtTQ',
-    thumbnail: '',
+    title: '영국 작가 Opake 첫 내한 전시<British Soul Art>',
+    description: '한영수교 140주년 기념 브리티쉬 솔아트 전시 관련 기사',
+    videoId: '',
+    link: 'https://www.gukjenews.com/news/articleView.html?idxno=2856788',  // 영상 대신 기사 링크
+    thumbnail: '/images/british-soul-art.jpg',
     date: '2024',
   },
   {
@@ -69,7 +70,7 @@ export const videos = [
   {
     id: 7,
     category: 'event',
-    title: '하루컴퍼니 × 이주형 브랜드 런칭',
+    title: '하루컴퍼니 <단하루> x 작가 로퀄세타',
     description: '서예가 이주형과 하루컴퍼니 협업 런칭 행사',
     videoId: '9gVuBK6xjeA',
     thumbnail: '',
@@ -105,7 +106,7 @@ export const videos = [
   {
     id: 11,
     category: 'event',
-    title: '김포복지재단×사랑의열매 제13회 62일간의 나눔릴레이',
+    title: '김포복지재단×사랑의열매×작가 오혁진 [제13회 62일간의 나눔릴레이]',
     description: '당신의 Gate, 김포의 Gates_세상에 온기를 여는 김포의 문',
     videoId: 'WU24a0HyZCg',
     thumbnail: '',

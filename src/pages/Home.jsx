@@ -136,7 +136,7 @@ function UpcomingProject() {
         </div>
 
         <div className="card-base overflow-hidden md:flex" data-reveal>
-          <div className="relative aspect-video md:aspect-auto md:w-1/2 md:min-h-[320px]">
+          <div className="relative aspect-[4/3] md:w-1/2">
             {p.image && (
               <img src={p.image} alt={p.title} className="absolute inset-0 h-full w-full object-cover" />
             )}

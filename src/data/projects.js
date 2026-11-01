@@ -12,7 +12,7 @@ export const projects = [
     period: '',
     venue: '',
     description: '곧 전시 소식을 전해드리겠습니다.',
-    image: '',
+    image: '/images/upcoming-concept.jpg',
   },
 ]
 
